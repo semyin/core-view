@@ -11,13 +11,14 @@ const routes: RouteObject[] = [
             {
                 index: true,
                 element: <Home />,
+
             },
             {
-                path: '/home',
+                path: 'home',
                 element: <Home />,
             },
             {
-                path: '/about',
+                path: 'about',
                 element: <About />,
             },
         ]

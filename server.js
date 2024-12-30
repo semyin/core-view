@@ -32,6 +32,25 @@ if (!isProduction) {
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
 
+// 新增一个接口用于测试数据获取
+app.get('/api/data', (req, res) => {
+  // 模拟服务器获取数据
+  const mockData = {
+    user: {
+      id: 1,
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    },
+    posts: [
+      { id: 1, title: 'Post 1', content: 'This is the first post.' },
+      { id: 2, title: 'Post 2', content: 'This is the second post.' },
+    ],
+  };
+
+  // 返回 JSON 数据
+  res.json(mockData);
+});
+
 // Serve HTML
 app.use('*all', async (req, res) => {
   try {
@@ -56,6 +75,8 @@ app.use('*all', async (req, res) => {
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
       .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(`<!--app-data-->`, `<script>window.__INITIAL_DATA__=${JSON.stringify(rendered.initialProps)}</script>`);
+
 
     res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
   } catch (e) {

@@ -16,7 +16,9 @@ const Home:React.FC = (data:any) => {
 // 定义 getServerSideProps 方法
 // @ts-ignore
 Home.getServerSideProps = async ( {}) => {
-    const data = await fetch('http://localhost:5173/api/data').then((res) => res.json());
+    const data = await fetch('http://localhost:5173/api/hello').then((res) => res.json());
+    console.log(data);
+    
     return {
         props: {
             data,

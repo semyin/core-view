@@ -4,6 +4,8 @@ import Home from '../views/Home/Home';
 import About from '../views/About/About';
 import React from "react";
 
+// const Home = dynamic(() => import('../views/Home/Home'))
+
 // 定义一个可以带有 getServerSideProps 方法的组件类型
 export type ComponentWithServerSideProps<P = {}> = React.ComponentType<P> & {
     getServerSideProps?: (context: { params: Params<string>}) => Promise<{ props: Record<string, any> }>;

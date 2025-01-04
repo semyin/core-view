@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
 export default function DefaultLayout(initialProps: Record<string, any>) {
-    console.log(initialProps)
     return (
       <div className="__defaultLayout__">
         {/* 将 initialProps 传递给 Outlet 渲染的子路由 */}

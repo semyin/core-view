@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server",
+    "dev": "cross-env NODE_ENV=development tsx ./nest/main.ts",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
-    "start": "cross-env NODE_ENV=production node server"
+    "preview": "cross-env NODE_ENV=production tsx ./nest/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
@@ -19,9 +19,12 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
-    "sirv": "^3.0.0"
+    "reflect-metadata": "^0.2.2",
+    "sirv": "^3.0.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@nestjs/cli": "^10.4.9",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.12",
@@ -29,6 +32,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.3.4",
     "cross-env": "^7.0.3",
+    "tsx": "^4.19.2",
     "typescript": "~5.7.2",
     "vite": "^6.0.1"
   }

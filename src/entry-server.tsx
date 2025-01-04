@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { StaticRouter, matchRoutes } from 'react-router-dom';
 import { renderToString } from 'react-dom/server'
-import { routes, routeConfigs } from "./router/routes.tsx";
+import { routes, routeConfigs } from "./router/routes";
 
 import App from './App'
 

@@ -1,13 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
+//import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 const isProd = process.env.NODE_ENV === 'production';
 
 async function bootstrap() {
@@ -17,20 +18,21 @@ async function bootstrap() {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'custom',
+      base: '/'
     });
 
     // 先处理 Vite 的中间件
     app.use(vite.middlewares);
 
     // 确保 API 路由在 SSR 处理之前
-    app.use('/api/*', (req, res, next) => {
+    app.use('/api/*', (req: Request, _res: Response, next: NextFunction) => {
       if (req.originalUrl.startsWith('/api/')) {
         return next();
       }
     });
 
     // SSR 处理
-    app.use('*', async (req, res, next) => {
+    app.use('*', async (req: Request, res: Response, next: NextFunction) => {
       const url = req.originalUrl;
 
       // 跳过 API 请求
@@ -51,7 +53,7 @@ async function bootstrap() {
         const rendered = await render(url);
 
         const html = template
-        .replace(`<!--ssr-outlet-->`, rendered.html)
+        .replace(`<!--app-html-->`, rendered.html)
         .replace(`<!--app-data-->`, `<script>window.__INITIAL_DATA__=${JSON.stringify(rendered.initialProps)}</script>`);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e) {
@@ -72,13 +74,13 @@ async function bootstrap() {
     );
 
     // 确保 API 路由在 SSR 处理之前
-    app.use('/api/*', (req, res, next) => {
+    app.use('/api/*', (req: Request, _res: Response, next: NextFunction) => {
       if (req.originalUrl.startsWith('/api/')) {
         return next();
       }
     });
 
-    app.use('*', async (req, res) => {
+    app.use('*', async (req: Request, res: Response) => {
       const url = req.originalUrl;
 
       // 跳过 API 请求

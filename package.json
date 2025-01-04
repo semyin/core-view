@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx ./nest/main.ts",
-    "build": "npm run build:client && npm run build:server",
+    "build": "rimraf dist && npm run build:client && npm run build:server && npm run build:nest",
     "build:client": "vite build --outDir dist/client",
+    "build:nest": "swc ./nest -d dist/nest",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
-    "preview": "cross-env NODE_ENV=production tsx ./nest/main.ts"
+    "preview": "node --experimental-specifier-resolution=node --experimental-modules dist/nest/nest/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
@@ -25,6 +26,8 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.9",
+    "@swc/cli": "^0.5.2",
+    "@swc/core": "^1.10.4",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.12",
@@ -32,8 +35,10 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.3.4",
     "cross-env": "^7.0.3",
+    "rimraf": "^6.0.1",
     "tsx": "^4.19.2",
     "typescript": "~5.7.2",
+    "vavite": "^5.1.0",
     "vite": "^6.0.1"
   }
 }
